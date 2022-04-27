@@ -1,0 +1,100 @@
+* {
+    box-sizing: border-box;
+}
+
+input[type="text"], textarea{
+    font-size: .875rem;
+    line-height: 1.25rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+    color: #374151;
+}
+
+input[type="checkbox"]{
+    display: inline-block;
+}
+
+input[type="checkbox"] ~ label,input[type="radio"] ~ label{
+    display: inline;
+}
+
+.container{
+    max-width: 1900px;
+    margin: 0 auto;
+}
+
+.content{
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0,0,0,0.1);
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    min-width: 800px;
+}
+
+body, .container, .content{
+    background: #121213;
+    overflow: hidden;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+td{
+    border: 2px solid #3a3a3c;
+    width: 58px;
+    height: 58px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    line-height: 2rem;
+    font-weight: bold;
+    vertical-align: middle;
+    box-sizing: border-box;
+    text-transform: uppercase;
+    user-select: none;
+    color: white;
+    margin: 2px;
+}
+
+.input-container{
+    margin-top: 64px;
+}
+
+button{
+    height: 38px;
+    border-radius: 6px;
+    border: none;
+    background: #818384;
+    color: #fff;
+}
+
+.correct{
+    background: #538d4e;
+}
+
+.in-word{
+    background: #b59f3b;
+}
+
+.incorrect{
+    background: #3a3a3c;
+}
+
+p {
+    font-size: 32px;
+    color: white;
+}
+
+.user-input{
+    font-weight: bold;
+    color: white;
+}

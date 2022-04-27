@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Guess the Word</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <table>
+                <tbody id="board">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="input-container">
+                <label for="word" class="user-input">Your Word: </label>
+                <input type="text" maxlength="5" minlength="5" id="word">
+                <button>Enter!</button>
+            </div>
+            <p id="game-over"></p>
+        </div>
+    </div>
+</body>
+<script>
+    const answer = "TOADY"
+    const board = document.getElementById('board');
+    const textBox = document.querySelector('input');
+    const submitButton = document.querySelector('button');
+    const gameOverMessage = document.getElementById('game-over');
+
+    let currentGuessNumber = 0;
+
+    submitButton.addEventListener('click', function() {
+        let guess = textBox.value;
+        if (guess.length !== 5) {
+            return //Do not accept words that are not 5 letters long
+        }
+
+        //render guess to the board
+        writeGuess(guess)
+
+        currentGuessNumber++
+
+        //check for win
+        if (guess.toUpperCase() === answer.toUpperCase()) {
+            gameOverMessage.textContent = 'You won!!!';
+            submitButton.remove();
+            textBox.remove();
+            return
+        }
+
+        //check for loss
+        if (currentGuessNumber >= board.children.length) {
+            gameOverMessage.textContent = `You lost, the word was ${answer}`;
+            submitButton.remove();
+            textBox.remove();
+        }
+    })
+
+    function writeGuess(guess) {
+        //build our match array so we easily see what matches
+        let matchArray = buildMatchArray(guess)
+
+        //identify the current tr tag
+        let currentGuessRow = board.children[currentGuessNumber];
+        //identify the column for each letter in that row
+        let columns = currentGuessRow.children
+
+        for (let i = 0; i < matchArray.length; i++) {
+            for (let i = 0; i < matchArray.length; i++) {
+                let column = columns[i];
+                column.textContent = guess[i].toUpperCase();
+
+                if (matchArray[i] === 2) {
+                    column.classList.add('correct'); //perfect match
+                } else if (matchArray[i] === 1) {
+                    column.classList.add('in-word'); //in word, wrong spot
+                } else {
+                    column.classList.add('incorrect'); //no match
+                }
+            }
+        }
+    }
+
+    function buildMatchArray(guess){
+        guess = guess.toUpperCase();
+        let answerAsArray = [];
+        let matchArray = [0,0,0,0,0]; //assume no match to start
+        for (let i = 0; i < answer.length; i++){
+            let letter = answer[i].toUpperCase();
+            answerAsArray.push(letter);
+        }
+        //find exact matches
+        for (let i = 0; i < guess.length; i++){
+            let letter = guess[i];
+            if (letter === answer[i]){
+                answerAsArray[i] = null; //remove letter to prevent matching it as yellow, too
+                matchArray[i] = 2 //indicate that a match was found
+            }
+        }
+        //find in-word matches and misses
+        for(let i = 0; i <guess.length; i++){
+            let letter = guess[i];
+            let index = answerAsArray.indexOf(letter);
+
+            //if letter not in remaining letters, move on to next letter
+            if (index === -1){
+                continue
+            }
+
+            //remove letter to prevent matching in other positions
+            answerAsArray[index] = null;
+            //mark it yellow as it is in the word but not in the correct spot
+            matchArray[i] = 1;
+        }
+        return matchArray
+    }
+
+</script>
+</html>
