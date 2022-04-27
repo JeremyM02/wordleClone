@@ -64,9 +64,37 @@
     </div>
 </body>
 <script>
-    const answer = "TOADY"
+    const wordList = [
+        "Benin",
+        "Egypt",
+        "Gabon",
+        "Ghana",
+        "Kenya",
+        "Libya",
+        "Niger",
+        "Sudan",
+        "Chile",
+        "China",
+        "Haiti",
+        "India",
+        "Italy",
+        "Japan",
+        "Malta",
+        "Nauru",
+        "Nepal",
+        "Palau",
+        "Qatar",
+        "Samoa",
+        "Spain",
+        "Syria",
+        "Tonga",
+        "Yemen"] //Yemen is at index 23, when the length of the array is 24
+
+    const answer = wordList[Math.floor(Math.random() * wordList.length - 1)].toUpperCase();
+    console.log(answer);
     const board = document.getElementById('board');
     const textBox = document.querySelector('input');
+    const inputContainer = document.querySelector('.input-container')
     const submitButton = document.querySelector('button');
     const gameOverMessage = document.getElementById('game-over');
 
@@ -74,6 +102,8 @@
 
     submitButton.addEventListener('click', function() {
         let guess = textBox.value;
+        textBox.value = "";
+
         if (guess.length !== 5) {
             return //Do not accept words that are not 5 letters long
         }
@@ -86,8 +116,9 @@
         //check for win
         if (guess.toUpperCase() === answer.toUpperCase()) {
             gameOverMessage.textContent = 'You won!!!';
-            submitButton.remove();
-            textBox.remove();
+            inputContainer.remove();
+            // submitButton.remove();
+            // textBox.remove();
             return
         }
 
