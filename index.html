@@ -89,8 +89,7 @@
         "Spain",
         "Syria",
         "Tonga",
-        "Yemen",
-        "#WORD"] //Yemen is at index 23, when the length of the array is 24
+        "Yemen",] //Yemen is at index 23, when the length of the array is 24
 
     const randomizeWord  = list => list[Math.floor(Math.random() * (wordList.length - 1))];
     let answer = randomizeWord(wordList).toUpperCase();
@@ -120,14 +119,18 @@
     resetButton.addEventListener('click', function() {
         currentGuessNumber = 0;
         textBox.value = "";
+        gameOverMessage.textContent = '';
         answer = randomizeWord(wordList).toUpperCase();
         inputContainer.style.display = 'block';
         console.log('New Answer:', answer);
         body.classList.remove('incorrect');
         body.classList.remove('correct');
         body.classList.remove('in-word');
+        body.classList.remove('failed');
         clearBoard();
+        textBox.focus();
     })
+
     const submitGuess = () => {
         let guess = textBox.value;
         textBox.value = "";
@@ -154,8 +157,7 @@
         if (currentGuessNumber >= board.children.length) {
             gameOverMessage.textContent = `You lost, the country was ${answer}`;
             body.classList.add('failed');
-            submitButton.remove();
-            textBox.remove();
+            inputContainer.style.display = 'none';
         }
     }
 
