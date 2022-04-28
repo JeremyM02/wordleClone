@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Guess the Word</title>
+    <title>Guess the 5-letter Country</title>
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
@@ -57,9 +57,10 @@
             <div class="input-container">
                 <label for="word" class="user-input">Your Word: </label>
                 <input type="text" maxlength="5" minlength="5" id="word">
-                <button>Enter!</button>
+                <button class="submit">Enter!</button>
             </div>
             <p id="game-over"></p>
+            <button class="reset">RESTART!</button>
         </div>
     </div>
 </body>
@@ -88,19 +89,46 @@
         "Spain",
         "Syria",
         "Tonga",
-        "Yemen"] //Yemen is at index 23, when the length of the array is 24
+        "Yemen",
+        "#WORD"] //Yemen is at index 23, when the length of the array is 24
 
-    const answer = wordList[Math.floor(Math.random() * wordList.length - 1)].toUpperCase();
+    const randomizeWord  = list => list[Math.floor(Math.random() * (wordList.length - 1))];
+    let answer = randomizeWord(wordList).toUpperCase();
     console.log(answer);
+
+    const body = document.querySelector('body');
     const board = document.getElementById('board');
     const textBox = document.querySelector('input');
     const inputContainer = document.querySelector('.input-container')
-    const submitButton = document.querySelector('button');
+    const submitButton = document.querySelector('.submit');
+    const resetButton = document.querySelector('.reset');
     const gameOverMessage = document.getElementById('game-over');
-
+    console.log(board.children.length);
+    const clearBoard = () => {
+        for (let i = 0; i < board.children.length; i++){
+            let currentRow = board.children[i];
+            for (let k = 0; k < 5; k++){
+                let square = currentRow.children[k];
+                square.textContent = "";
+                square.classList.remove('incorrect');
+                square.classList.remove('correct');
+                square.classList.remove('in-word');
+            }
+        }
+    }
     let currentGuessNumber = 0;
-
-    submitButton.addEventListener('click', function() {
+    resetButton.addEventListener('click', function() {
+        currentGuessNumber = 0;
+        textBox.value = "";
+        answer = randomizeWord(wordList).toUpperCase();
+        inputContainer.style.display = 'block';
+        console.log('New Answer:', answer);
+        body.classList.remove('incorrect');
+        body.classList.remove('correct');
+        body.classList.remove('in-word');
+        clearBoard();
+    })
+    const submitGuess = () => {
         let guess = textBox.value;
         textBox.value = "";
 
@@ -115,25 +143,44 @@
 
         //check for win
         if (guess.toUpperCase() === answer.toUpperCase()) {
-            gameOverMessage.textContent = 'You won!!!';
-            inputContainer.remove();
-            // submitButton.remove();
-            // textBox.remove();
+            gameOverMessage.textContent = 'You found the country!!!';
+            inputContainer.style.display = 'none';
             return
+        } else {
+            textBox.focus();
         }
 
         //check for loss
         if (currentGuessNumber >= board.children.length) {
-            gameOverMessage.textContent = `You lost, the word was ${answer}`;
+            gameOverMessage.textContent = `You lost, the country was ${answer}`;
+            body.classList.add('failed');
             submitButton.remove();
             textBox.remove();
         }
-    })
+    }
+
+    submitButton.addEventListener('click', submitGuess);
+    document.addEventListener('keyup', function(e){
+        if (e.key === 'Enter'){
+            submitGuess();
+        }
+    });
 
     function writeGuess(guess) {
         //build our match array so we easily see what matches
         let matchArray = buildMatchArray(guess)
-
+        console.log(matchArray);
+        if (matchArray.includes(1)){
+            body.classList.remove('incorrect');
+            body.classList.add('in-word');
+        } else if (!matchArray.includes(1) && !matchArray.includes(2)){
+            body.classList.remove('in-word');
+            body.classList.add('incorrect');
+        } else if (!matchArray.includes(0) && !matchArray.includes(1)){
+            body.classList.remove('incorrect');
+            body.classList.remove('in-word');
+            body.classList.add('correct');
+        }
         //identify the current tr tag
         let currentGuessRow = board.children[currentGuessNumber];
         //identify the column for each letter in that row

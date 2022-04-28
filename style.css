@@ -2,6 +2,11 @@
     box-sizing: border-box;
 }
 
+body{
+    background-color: rgba(0,0,0,0.5);
+    transition: background-color 1s;
+}
+
 input[type="text"], textarea{
     font-size: .875rem;
     line-height: 1.25rem;
@@ -61,7 +66,7 @@ td{
     box-sizing: border-box;
     text-transform: uppercase;
     user-select: none;
-    color: white;
+    color: rgba(255,255,255, 0);
     margin: 2px;
 }
 
@@ -77,16 +82,24 @@ button{
     color: #fff;
 }
 
+.correct, .in-word, .incorrect{
+    transition: background-color 1s, color 1s;
+    color: rgba(255, 255, 255, 1);
+}
 .correct{
-    background: #538d4e;
+    background: rgb(83, 141, 78);
 }
 
 .in-word{
-    background: #b59f3b;
+    background: rgb(181, 159, 59);
 }
 
 .incorrect{
-    background: #3a3a3c;
+    background: rgb(58, 58, 60);
+}
+
+.failed{
+    background: rgb(208, 83, 83);
 }
 
 p {
